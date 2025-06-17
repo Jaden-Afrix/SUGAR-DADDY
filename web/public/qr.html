@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SUGAR DADDY - QR Code</title>
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --primary: #00ffaa;
+      --secondary: #ff00c8;
+      --bg-dark: #0a0a0a;
+      --bg-darker: #050505;
+      --glow: 0 0 15px rgba(0, 255, 170, 0.7);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: var(--bg-darker);
+      color: #fff;
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .grid-lines {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: 
+        linear-gradient(rgba(10, 10, 10, 0.8) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(10, 10, 10, 0.8) 1px, transparent 1px);
+      background-size: 30px 30px;
+      z-index: -2;
+    }
+    .glow-effect {
+      position: absolute;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+      filter: blur(40px);
+      opacity: 0.2;
+      z-index: -1;
+      animation: pulse 6s infinite alternate;
+    }
+    .glow-effect:nth-child(1) {
+      top: 10%;
+      left: 20%;
+      background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+    }
+    .glow-effect:nth-child(2) {
+      bottom: 15%;
+      right: 25%;
+      background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+    }
+    .container {
+      max-width: 600px;
+      width: 90%;
+      padding: 2rem;
+      background: rgba(15, 15, 15, 0.8);
+      border: 1px solid rgba(0, 255, 170, 0.3);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--glow), 0 10px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 1;
+    }
+    .title {
+      font-size: 2.8rem;
+      color: var(--primary);
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: var(--glow);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      color: #ccc;
+      margin-bottom: 1.2rem;
+    }
+    .status {
+      display: inline-block;
+      padding: 0.5rem 1.2rem;
+      background: rgba(0, 255, 170, 0.1);
+      border: 1px solid var(--primary);
+      border-radius: 30px;
+      font-size: 1rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      animation: statusPulse 2s infinite;
+    }
+    .qr-container {
+      width: 280px;
+      height: 280px;
+      margin: 0 auto 1.5rem;
+      position: relative;
+    }
+    .qr-box {
+      width: 100%;
+      height: 100%;
+      border: 4px dashed var(--primary);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.4);
+      position: relative;
+      box-shadow: var(--glow);
+    }
+    #qrcode {
+      padding: 10px;
+      background: #fff;
+      border-radius: 10px;
+    }
+    .instructions {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.4);
+      border-left: 3px solid var(--primary);
+      border-radius: 10px;
+    }
+    .instructions h3 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
+    .steps {
+      list-style: none;
+      text-align: left;
+      padding-left: 1rem;
+    }
+    .steps li {
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    .steps li::before {
+      content: "➜";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+    }
+    .footer {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+    .footer a {
+      color: #0af;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.2; }
+      100% { transform: scale(1.2); opacity: 0.4; }
+    }
+    @keyframes statusPulse {
+      0% { box-shadow: 0 0 10px rgba(0, 255, 170, 0.5); }
+      50% { box-shadow: 0 0 20px rgba(0, 255, 170, 0.8); }
+      100% { box-shadow: 0 0 10px rgba(0, 255, 170, 0.5); }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-lines"></div>
+  <div class="glow-effect"></div>
+  <div class="glow-effect"></div>
+
+  <div class="container">
+    <h1 class="title">🤖 SUGAR DADDY BOT</h1>
+    <p class="subtitle">Premium WhatsApp QR Pairing</p>
+    <div class="status">Waiting for QR code...</div>
+
+    <div class="qr-container">
+      <div class="qr-box">
+        <div id="qrcode"></div>
+      </div>
+    </div>
+
+    <div class="instructions">
+      <h3>How to Scan</h3>
+      <ul class="steps">
+        <li>Open WhatsApp on your phone</li>
+        <li>Go to <strong>Settings</strong> ➜ Linked Devices</li>
+        <li>Tap <strong>Link a Device</strong></li>
+        <li>Scan the QR code above</li>
+      </ul>
+    </div>
+
+    <div class="footer">
+      <p>Powered by <strong>ALPHA-BLAKE</strong></p>
+      <a href="https://whatsapp.com/channel/0029VbAxoHNF6sn7hhz2Ss24">WhatsApp Channel</a> |
+      <a href="https://t.me/lpg1_tech">Telegram</a>
+    </div>
+  </div>
+
+  <script>
+    const socket = io();
+    const qrBox = document.getElementById("qrcode");
+    const status = document.querySelector(".status");
+
+    socket.on("qr", (qrData) => {
+      qrBox.innerHTML = "";
+      new QRCode(qrBox, {
+        text: qrData,
+        width: 220,
+        height: 220,
+        colorDark: "#000",
+        colorLight: "#fff",
+        correctLevel: QRCode.CorrectLevel.H,
+      });
+      status.textContent = "QR Code Ready - Scan Now!";
+    });
+
+    socket.on("connected", (msg) => {
+      status.textContent = msg;
+      status.style.background = "#001d10";
+      status.style.color = "#00ff88";
+      status.style.borderColor = "#00ff88";
+      const done = document.createElement("p");
+      done.textContent = "✅ You’re now connected to WhatsApp!";
+      done.style.color = "#00ffaa";
+      done.style.marginTop = "10px";
+      status.parentNode.appendChild(done);
+    });
+  </script>
+</body>
+</html>

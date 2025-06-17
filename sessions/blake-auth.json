@@ -1,0 +1,36 @@
+{
+  "creds": {
+    "noiseKey": {
+      "private": "<private_key>",
+      "public": "<public_key>"
+    },
+    "signedIdentityKey": {
+      "private": "<signed_private_key>",
+      "public": "<signed_public_key>"
+    },
+    "signedPreKey": {
+      "keyId": 1,
+      "publicKey": "<signed_pre_key_public>",
+      "signature": "<signature>"
+    },
+    "registrationId": 123456789,
+    "advSecretKey": "<adv_secret_key>",
+    "processedHistoryMessages": [],
+    "nextPreKeyId": 2,
+    "firstUnuploadedPreKeyId": 2,
+    "accountSettings": {
+      "unarchiveChats": false
+    },
+    "deviceId": "blake-device-1",
+    "phoneId": "blake-phone-1",
+    "identityId": "blake-identity-1"
+  },
+  "keys": {
+    "preKeys": {},
+    "sessions": {},
+    "senderKeys": {},
+    "appStateSyncKeys": {},
+    "appStateVersions": {},
+    "senderKeyMemory": {}
+  }
+}
